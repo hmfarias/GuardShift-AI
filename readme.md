@@ -16,12 +16,12 @@
 
 En este repositorio se incluye un documento de ejemplo llamado:
 
-📄 **2025-04-Cobertura Ejemplo.docx**
+📄 **[2025-04-Cobertura Ejemplo.docx](./2025-04-Cobertura%20Ejemplo.docx)**
 
 Este archivo simula los mensajes reales que la empresa **RF Seguridad** recibe por WhatsApp para registrar los turnos del personal.  
 Podés usar este archivo para hacer pruebas y comprobar cómo la aplicación extrae la información y genera automáticamente un Excel organizado.
 
-🔽 **Descargá el archivo desde este mismo repositorio y usalo en la sección “Procesar Archivos” de la aplicación.**
+🔽 **Descargá el archivo desde el enlace anterior y usalo en la sección “Process Files” de la aplicación.**
 
 ---
 
@@ -90,6 +90,8 @@ GOOGLE_API_KEY = "TU_API_KEY_AQUÍ"
 streamlit run app.py
 ```
 
+---
+
 ## 📂 Estructura del proyecto
 
 ```
@@ -103,16 +105,22 @@ GuardShift-IA/
     └── secrets.toml      # Archivo con la API Key de Gemini
 ```
 
+---
+
 ## 🙏 Agradecimientos
 
 Quiero expresar un especial agradecimiento a Norman Beltrán, profesor de la materia Inteligencia Artificial: Prompt Engineering para Programadores, y al tutor Hugo Mon, por su dedicación y acompañamiento.
 Gracias por brindarnos el puntapié inicial en el mundo de la Inteligencia Artificial y guiarnos con tanta predisposición en este camino tan valioso para todo programador.
+
+---
 
 ## 👨‍💻 Autor
 
 Marcelo Farias
 • LinkedIn
 • GitHub
+
+---
 
 ## 🛡️ Licencia
 
