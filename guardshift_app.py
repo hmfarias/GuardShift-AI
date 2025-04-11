@@ -8,7 +8,7 @@ from datetime import datetime
 import tempfile
 
 # --- Page configuration ---
-st.set_page_config(page_title="GuardShift-IA", layout="centered")
+st.set_page_config(page_title="GuardShift-AI", layout="centered")
 
 # --- API key configuration ---
 API_KEY = st.secrets["GOOGLE_API_KEY"] if "GOOGLE_API_KEY" in st.secrets else os.getenv("GOOGLE_API_KEY")
@@ -35,7 +35,7 @@ else:
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --- Sidebar Navigation ---
-st.sidebar.title("GuardShift-IA")
+st.sidebar.title("GuardShift-AI")
 section = st.sidebar.radio("Navigation", ["Procesar Archivos", "Acerca del Proyecto", "Acerca de mi", "Agradecimientos"])
 
 # --- Section: Acerca de mi ---
@@ -82,7 +82,7 @@ Estoy listo para aportar mis conocimientos técnicos, capacidad analítica y exp
 elif section == "Acerca del Proyecto":
     st.title("📄 Acerca del Proyecto")
     st.markdown("""
-**GuardShift-IA** es una aplicación desarrollada con **Python** y **Streamlit**, que utiliza la inteligencia artificial de **Gemini 1.5 Flash** para automatizar el procesamiento de turnos de trabajo enviados por **WhatsApp**.
+**GuardShift-AI** es una aplicación desarrollada con **Python** y **Streamlit**, que utiliza la inteligencia artificial de **Gemini 1.5 Flash** para automatizar el procesamiento de turnos de trabajo enviados por **WhatsApp**.
 
 ### 🚧 El Problema
 
@@ -100,7 +100,7 @@ Este proceso es **lento** y propenso a **errores humanos**.
 
 ### 🤖 La Solución
 
-GuardShift-IA permite:
+GuardShift-AI permite:
 
 1. Subir un archivo **Word** con mensajes copiados de WhatsApp.
 2. La IA extrae y organiza los datos automáticamente.
@@ -146,7 +146,7 @@ elif section == "Agradecimientos":
 
 # --- Section: File Processor ---
 elif section == "Procesar Archivos":
-    st.title("🛡️ GuardShift-IA")
+    st.title("🛡️ GuardShift-AI")
     st.write("Cargar un documento de WhatsApp Word y convertirlo en un archivo Excel limpio.")
 
     uploaded_file = st.file_uploader("Subir mensajes de WhatsApp (.docx)", type=["docx"])
