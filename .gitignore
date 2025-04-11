@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Streamlit temporary file storage
+.streamlit/config.toml
+.streamlit/secrets.toml
+
+# Local virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# VSCode settings
+.vscode/
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Output Excel files
+*.xlsx
+
+# Temporary Word documents
+*.docx
+
+# Temporary files generated during execution
+*.pdf
+*.zip
+*.tar.gz
+*.sqlite3
