@@ -4,11 +4,29 @@
 
 **GuardShift-IA** es una aplicación web que utiliza Inteligencia Artificial para automatizar el procesamiento de turnos laborales registrados a través de mensajes de WhatsApp. Desarrollada con Python, Streamlit y Gemini 1.5 Flash, transforma mensajes copiados en un archivo Word en una planilla Excel limpia y lista para usar.
 
+## <img src="./screenshoot.png" alt="Gracias" width="550"/>
+
+## 📋 Menú
+
+- [🚀 Link de la aplicación](#-link-de-la-aplicación)
+- [🔍 PARA REALIZAR LA PRUEBA](#-para-realizar-la-prueba)
+- [🧠 ¿Qué problema resuelve?](#-qué-problema-resuelve)
+- [🤖 ¿Qué hace GuardShift-IA?](#-qué-hace-guardshift-ia)
+- [👆🏻 Relevancia](#-relevancia)
+- [🔧 Tecnologías utilizadas](#-tecnologías-utilizadas)
+- [📥 Instalación local (opcional)](#-instalación-local-opcional)
+- [📂 Estructura del proyecto](#-estructura-del-proyecto)
+- [🙏 Agradecimientos](#-agradecimientos)
+- [👨‍💻 Autor](#-autor)
+- [🛡️ Licencia](#-licencia)
+
 ---
 
 ## 🚀 Link de la aplicación
 
 👉 **[guardshift-ai.streamlit.app](https://guardshift-ai.streamlit.app)**
+
+[🔝 Volver al menú](#-menú)
 
 ---
 
@@ -23,11 +41,13 @@ Podés usar este archivo para hacer pruebas y comprobar cómo la aplicación ext
 
 🔽 **Descargá el archivo desde el enlace anterior (selecciona "view raw" para descarlo), o bien desde este mismo repositorio y usalo en la sección “Process Files” de la aplicación.**
 
+[🔝 Volver al menú](#-menú)
+
 ---
 
 ## 🧠 ¿Qué problema resuelve?
 
-En **RF Seguridad**, una empresa de seguridad privada, el personal informa sus turnos mediante mensajes de WhatsApp. Estos mensajes contienen:
+En **RF Seguridad**, una empresa de seguridad privada, el personal informa sus turnos mediante mensajes de WhatsApp, Estos mensajes son transcritos a un documento word y contienen información clave sobre el servicio prestado:
 
 - 📍 Objetivo (lugar de trabajo)
 - 📅 Fecha
@@ -35,7 +55,21 @@ En **RF Seguridad**, una empresa de seguridad privada, el personal informa sus t
 - 👮‍♂️ Nombre y DNI del vigilador
 - 🧑‍💼 Supervisor
 
-Este proceso manual es lento, propenso a errores humanos y requiere mucho tiempo de carga.
+Ejemplo:
+
+```
+=============
+Objetivo: Banco Córdoba - Sucursal Centro
+Fecha: 10/04/2025
+DNI 30123456 Juan Pérez 07 a 19
+DNI 30111222 María Gómez 07 a 19
+Supervisor: Sargento Arce
+=============
+```
+
+El proceso actual implica extraer manualmente la información de estos mensajes y registrarla en una planilla de Excel, que después alimenta el sistema de liquidación de sueldos. Este método es lento ya que requiere mucho tiempo de carga, propenso a errores y consume tiempo valioso que podría destinarse a otras tareas de gestión y control..
+
+[🔝 Volver al menú](#-menú)
 
 ---
 
@@ -43,7 +77,19 @@ Este proceso manual es lento, propenso a errores humanos y requiere mucho tiempo
 
 1. **Subís un archivo Word (.docx)** con los mensajes de WhatsApp copiados.
 2. La IA analiza y extrae los datos estructurados.
-3. Se genera una **planilla Excel (.xlsx)** con la información organizada.
+3. Se genera una **planilla Excel (.xlsx)** con la información organizada y lista para usar.
+
+[🔝 Volver al menú](#-menú)
+
+---
+
+## 👆🏻 Relevancia
+
+El proyecto GUARDSHIFT-AI es relevante porque resuelve una problemática real en la empresa RF Seguridad: la carga manual de registros de horas de trabajo a partir de mensajes de WhatsApp.
+
+La automatización con IA no solo agiliza el procesamiento de la información, sino que también minimiza los errores humanos, mejora la organización de los datos y permite generar reportes de manera eficiente.
+
+[🔝 Volver al menú](#-menú)
 
 ---
 
@@ -63,6 +109,8 @@ Este proceso manual es lento, propenso a errores humanos y requiere mucho tiempo
   - `tempfile`
   - `datetime`
   - `os`
+
+[🔝 Volver al menú](#-menú)
 
 ---
 
@@ -90,6 +138,8 @@ GOOGLE_API_KEY = "TU_API_KEY_AQUÍ"
 streamlit run app.py
 ```
 
+[🔝 Volver al menú](#-menú)
+
 ---
 
 ## 📂 Estructura del proyecto
@@ -105,12 +155,18 @@ GuardShift-IA/
     └── secrets.toml      # Archivo con la API Key de Gemini
 ```
 
+[🔝 Volver al menú](#-menú)
+
 ---
 
 ## 🙏 Agradecimientos
 
 Quiero expresar un especial agradecimiento a Norman Beltrán, profesor de la materia Inteligencia Artificial: Prompt Engineering para Programadores, y al tutor Hugo Mon, por su dedicación y acompañamiento.
+
 Gracias por brindarnos el puntapié inicial en el mundo de la Inteligencia Artificial y guiarnos con tanta predisposición en este camino tan valioso para todo programador.
+<img src="./thanks.png" alt="Gracias" width="300"/>
+
+[🔝 Volver al menú](#-menú)
 
 ---
 
@@ -120,9 +176,13 @@ Marcelo Farias
 • LinkedIn
 • GitHub
 
+[🔝 Volver al menú](#-menú)
+
 ---
 
 ## 🛡️ Licencia
 
 Este proyecto está bajo la Licencia MIT.
 © 2025 Marcelo Farias
+
+[🔝 Volver al menú](#-menú)
