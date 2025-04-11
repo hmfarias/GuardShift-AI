@@ -18,10 +18,10 @@ En este repositorio se incluye un documento de ejemplo llamado:
 
 📄 **[2025-04-Cobertura Ejemplo.docx](./2025-04-Cobertura%20Ejemplo.docx)**
 
-Este archivo simula los mensajes reales que la empresa **RF Seguridad** recibe por WhatsApp para registrar los turnos del personal.  
+Este archivo simula el archivo real que la empresa **RF Seguridad** construye en base a los mensajes recibidos por WhatsApp para registrar los turnos del personal.  
 Podés usar este archivo para hacer pruebas y comprobar cómo la aplicación extrae la información y genera automáticamente un Excel organizado.
 
-🔽 **Descargá el archivo desde el enlace anterior y usalo en la sección “Process Files” de la aplicación.**
+🔽 **Descargá el archivo desde el enlace anterior (selecciona "view raw" para descarlo), o bien desde este mismo repositorio y usalo en la sección “Process Files” de la aplicación.**
 
 ---
 
