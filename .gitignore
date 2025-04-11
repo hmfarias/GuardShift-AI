@@ -37,12 +37,6 @@ Thumbs.db
 dist/
 build/
 
-# Output Excel files
-*.xlsx
-
-# Temporary Word documents
-*.docx
-
 # Temporary files generated during execution
 *.pdf
 *.zip
