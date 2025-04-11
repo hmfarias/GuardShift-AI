@@ -5,7 +5,7 @@
 **GuardShift-IA** es una aplicación web que utiliza Inteligencia Artificial para automatizar el procesamiento de turnos laborales registrados a través de mensajes de WhatsApp. Desarrollada con Python, Streamlit y Gemini 1.5 Flash, transforma mensajes copiados en un archivo Word en una planilla Excel limpia y lista para usar.
 
 <p align="center">
-  <img src="./screenshot.png" alt="Gracias" width="600"/>
+  <img src="./screenshot.png" alt="Gracias" width="600" hight="200"/>
 </p>
 
 ## 📋 Menú
