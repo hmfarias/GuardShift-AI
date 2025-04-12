@@ -80,7 +80,7 @@ El proceso actual implica extraer manualmente la información de estos mensajes 
 3. Se genera una **planilla Excel (.xlsx)** con la información organizada y lista para usar.
 
 <p align="center">
-  <img src="./screenshot.png" alt="Gracias"  hight="100"/>
+  <img src="./screenshot.png" alt="Gracias" width="600" height="500"/>
 </p>
 
 [🔝 Volver al menú](#-menú)
