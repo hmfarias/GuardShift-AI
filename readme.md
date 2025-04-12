@@ -4,9 +4,7 @@
 
 **GuardShift-IA** es una aplicación web que utiliza Inteligencia Artificial para automatizar el procesamiento de turnos laborales registrados a través de mensajes de WhatsApp. Desarrollada con Python, Streamlit y Gemini 1.5 Flash, transforma mensajes copiados en un archivo Word en una planilla Excel limpia y lista para usar.
 
-<p align="center">
-  <img src="./screenshot.png" alt="Gracias" width="600" hight="200"/>
-</p>
+---
 
 ## 📋 Menú
 
@@ -81,6 +79,10 @@ El proceso actual implica extraer manualmente la información de estos mensajes 
 2. La IA analiza y extrae los datos estructurados.
 3. Se genera una **planilla Excel (.xlsx)** con la información organizada y lista para usar.
 
+<p align="center">
+  <img src="./screenshot.png" alt="Gracias" width="600" hight="200"/>
+</p>
+
 [🔝 Volver al menú](#-menú)
 
 ---
@@ -97,17 +99,17 @@ La automatización con IA no solo agiliza el procesamiento de la información, s
 
 ## 🔧 Tecnologías utilizadas
 
-- **Lenguaje**: Python 3.11
-- **Framework**: Streamlit
-- **Procesamiento IA**: Gemini 1.5 Flash
-- **Entrada**: Documentos `.docx`
-- **Salida**: Archivos `.xlsx`
-- **Librerías clave**:
-  - `streamlit`
-  - `pandas`
+![Static Badge](https://img.shields.io/badge/CLINE-black?style=for-the-badge) Como asistente de desarrollo de IA integrado con Microsoft Visual Studio Code, que proporciona una interfaz que facilita la creación de código basado en prompts introducidos por el usuario.
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) Como lenguaje de programación de alto nivel, interpretado y de código abierto. Python es una de las opciones más populares para el desarrollo de aplicaciones de inteligencia artificial.
+![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white) Como una biblioteca de Python de código abierto que permite crear aplicaciones web interactivas. Streamlit es una herramienta que permite desarrollar aplicaciones web de manera rápida y fácil.
+![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white) Como una biblioteca de Python de código abierto que permite la creación de aplicaciones de inteligencia artificial.
+![Microsoft Word](https://img.shields.io/badge/Microsoft_Word-2B579A?style=for-the-badge&logo=microsoft-word&logoColor=white) Como formato de archvio de entrada.
+![Microsoft Excel](https://img.shields.io/badge/Microsoft_Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white) Como formato de archvio de salida.
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) Como una biblioteca de Python de código abierto que permite manipular y analizar datos estructurados.
+
+- **Otras Librerías clave**:
   - `python-docx`
   - `re`
-  - `google.generativeai`
   - `tempfile`
   - `datetime`
   - `os`
