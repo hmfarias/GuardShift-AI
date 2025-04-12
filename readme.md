@@ -126,7 +126,13 @@ La automatización con IA no solo agiliza el procesamiento de la información, s
 
 ## 📥 Instalación local (opcional)
 
-```bash
+La aplicación GuardShift-IA se encuentra desplegada en la web y puede utilizarse directamente desde el siguiente enlace:
+
+👉 https://guardshift-ai.streamlit.app
+
+Sin embargo, si lo preferís, también podés instalarla y ejecutarla de forma local en tu computadora para hacer pruebas o adaptaciones personalizadas. Para eso, seguí estos pasos:
+
+```
 # 1. Clonar el repositorio
 git clone https://github.com/hmfarias/GuardShift-IA.git
 cd GuardShift-IA
