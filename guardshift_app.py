@@ -145,30 +145,27 @@ elif section == "Procesar Archivos":
             st.warning("⚠️ Primero debés subir un archivo .docx")
             st.stop()
 
-        with st.spinner("⏳ Procesando mensajes con Gemini..."):
+        with st.spinner("⏳ Procesando archivo con Gemini..."):
             try:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
                     tmp.write(uploaded_file.read())
                     tmp_path = tmp.name
 
                 doc = Document(tmp_path)
-                full_text = "\n".join([para.text for para in doc.paragraphs])
-                messages = full_text.split("==============")
-                result_data = []
+                full_text = "\n".join([para.text for para in doc.paragraphs]).strip()
 
-                for message in messages:
-                    if not message.strip():
-                        continue
+                if not full_text:
+                    st.warning("⚠️ El documento está vacío.")
+                    st.stop()
 
-                    prompt = f"""
+                prompt = f"""
 You are an assistant that extracts structured data from unstructured WhatsApp messages.
 
-The message below may include:
-- one 'Objetivo'
-- one 'Fecha'
-- multiple 'DNI + Nombre + Horario'
+The text below contains multiple WhatsApp shift messages from a private security company.
 
-Extract the data in table format with EXACTLY these columns:
+Extract ALL shift records from the entire text.
+
+Return the result ONLY as a table with EXACTLY these columns:
 Objetivo | Fecha | DNI | Nombre | Entrada | Salida
 
 Rules:
@@ -176,41 +173,43 @@ Rules:
 - Do not add explanations.
 - Do not add markdown.
 - Do not add ``` or extra text.
+- Each row must represent ONE person / ONE shift.
+- Repeat Objetivo and Fecha for every corresponding person.
 - 'Horario' or 'Turno' may appear as:
     * 07 a 19
     * 07:30hs a 19:00hs
     * 07/19
-- Use 24h format (hh:mm) for Entrada and Salida.
-- One 'Horario' may apply to multiple 'DNI + Nombre' lines.
-- If multiple 'DNI' exist, repeat Objetivo and Fecha.
+- Convert Entrada and Salida to 24h format (hh:mm).
 - If data is missing, leave the field empty.
 
 Text:
 \"\"\"
-{message}
+{full_text}
 \"\"\"
-                    """
+                """
 
-                    response = client.models.generate_content(
-                        model="gemini-2.5-flash",
-                        contents=prompt
-                    )
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt
+                )
 
-                    raw = response.text.strip()
-                    lines = [line for line in raw.split("\n") if "|" in line]
+                raw = response.text.strip()
+                lines = [line for line in raw.split("\n") if "|" in line]
 
-                    if len(lines) >= 2:
-                        headers = [h.strip() for h in lines[0].split("|")]
+                result_data = []
 
-                        for line in lines[1:]:
-                            parts = [p.strip() for p in line.split("|")]
+                if len(lines) >= 2:
+                    headers = [h.strip() for h in lines[0].split("|")]
 
-                            if len(parts) == len(headers):
-                                row = dict(zip(headers, parts))
-                                result_data.append(row)
+                    for line in lines[1:]:
+                        parts = [p.strip() for p in line.split("|")]
+
+                        if len(parts) == len(headers):
+                            row = dict(zip(headers, parts))
+                            result_data.append(row)
 
                 if not result_data:
-                    st.warning("⚠️ No data was extracted.")
+                    st.warning("⚠️ No se pudieron extraer datos del documento.")
                 else:
                     df = pd.DataFrame(result_data)
 
@@ -280,4 +279,9 @@ Text:
                             )
 
             except Exception as e:
-                st.error(f"❌ Error general al procesar el archivo: {e}")
+                error_message = str(e)
+
+                if "429" in error_message or "RESOURCE_EXHAUSTED" in error_message:
+                    st.error("❌ Se alcanzó el límite de uso gratuito de Gemini. Esperá unos segundos e intentá nuevamente.")
+                else:
+                    st.error(f"❌ Error general al procesar el archivo: {e}")
