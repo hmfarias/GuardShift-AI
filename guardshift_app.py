@@ -20,24 +20,6 @@ if not API_KEY:
 # --- Gemini client configuration ---
 client = genai.Client(api_key=API_KEY)
 
-
-def verify_gemini_api():
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents="Say hello"
-        )
-        return "hello" in response.text.lower()
-    except Exception as e:
-        st.error(f"❌ Gemini API Error: {e}")
-        return False
-
-
-if verify_gemini_api():
-    st.success("✅ Gemini API conectada.")
-else:
-    st.stop()
-
 # --- Sidebar Navigation ---
 st.sidebar.title("GuardShift-AI")
 section = st.sidebar.radio(
@@ -158,21 +140,27 @@ elif section == "Procesar Archivos":
 
     uploaded_file = st.file_uploader("Subir mensajes de WhatsApp (.docx)", type=["docx"])
 
-    if st.button("Procesar Archivo") and uploaded_file:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
-            tmp.write(uploaded_file.read())
-            tmp_path = tmp.name
+    if st.button("Procesar Archivo"):
+        if not uploaded_file:
+            st.warning("⚠️ Primero debés subir un archivo .docx")
+            st.stop()
 
-        doc = Document(tmp_path)
-        full_text = "\n".join([para.text for para in doc.paragraphs])
-        messages = full_text.split("==============")
-        result_data = []
+        with st.spinner("⏳ Procesando mensajes con Gemini..."):
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
+                    tmp.write(uploaded_file.read())
+                    tmp_path = tmp.name
 
-        for message in messages:
-            if not message.strip():
-                continue
+                doc = Document(tmp_path)
+                full_text = "\n".join([para.text for para in doc.paragraphs])
+                messages = full_text.split("==============")
+                result_data = []
 
-            prompt = f"""
+                for message in messages:
+                    if not message.strip():
+                        continue
+
+                    prompt = f"""
 You are an assistant that extracts structured data from unstructured WhatsApp messages.
 
 The message below may include:
@@ -201,98 +189,95 @@ Text:
 \"\"\"
 {message}
 \"\"\"
-            """
+                    """
 
-            try:
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt
-                )
+                    response = client.models.generate_content(
+                        model="gemini-2.5-flash",
+                        contents=prompt
+                    )
 
-                raw = response.text.strip()
-                lines = [line for line in raw.split("\n") if "|" in line]
+                    raw = response.text.strip()
+                    lines = [line for line in raw.split("\n") if "|" in line]
 
-                if len(lines) >= 2:
-                    headers = [h.strip() for h in lines[0].split("|")]
+                    if len(lines) >= 2:
+                        headers = [h.strip() for h in lines[0].split("|")]
 
-                    for line in lines[1:]:
-                        parts = [p.strip() for p in line.split("|")]
+                        for line in lines[1:]:
+                            parts = [p.strip() for p in line.split("|")]
 
-                        if len(parts) == len(headers):
-                            row = dict(zip(headers, parts))
-                            result_data.append(row)
+                            if len(parts) == len(headers):
+                                row = dict(zip(headers, parts))
+                                result_data.append(row)
+
+                if not result_data:
+                    st.warning("⚠️ No data was extracted.")
+                else:
+                    df = pd.DataFrame(result_data)
+
+                    expected_columns = ["Objetivo", "Fecha", "DNI", "Nombre", "Entrada", "Salida"]
+                    for col in expected_columns:
+                        if col not in df.columns:
+                            df[col] = ""
+
+                    df = df[expected_columns]
+
+                    # Clean empty or hyphen-only rows
+                    df = df[
+                        ~df.apply(
+                            lambda row: all(re.fullmatch(r"[-–—\s]*", str(cell)) for cell in row),
+                            axis=1
+                        )
+                    ]
+
+                    def format_time(value):
+                        value = str(value).replace("hs", "").replace("HS", "").strip()
+
+                        if re.match(r"^\d{1,2}$", value):
+                            return f"{int(value):02d}:00"
+
+                        if "/" in value:
+                            value = value.replace("/", ":")
+
+                        match = re.match(r"^(\d{1,2})([:hH]?)(\d{0,2})$", value)
+                        if match:
+                            hour = int(match.group(1))
+                            minute = int(match.group(3)) if match.group(3) else 0
+                            return f"{hour:02d}:{minute:02d}"
+
+                        return value
+
+                    df["Entrada"] = df["Entrada"].apply(format_time)
+                    df["Salida"] = df["Salida"].apply(format_time)
+
+                    def format_date(value):
+                        value = str(value).strip()
+
+                        for fmt in ("%d/%m/%Y", "%d/%m/%y", "%d-%m-%Y", "%d-%m-%y"):
+                            try:
+                                date_obj = datetime.strptime(value, fmt)
+                                return date_obj.strftime("%d/%m/%Y")
+                            except:
+                                continue
+
+                        return value
+
+                    df["Fecha"] = df["Fecha"].apply(format_date)
+
+                    filename = os.path.splitext(uploaded_file.name)[0] + ".xlsx"
+
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp_xlsx:
+                        df.to_excel(tmp_xlsx.name, index=False)
+
+                        st.success("✅ Archivo procesado con éxito!")
+                        st.dataframe(df)
+
+                        with open(tmp_xlsx.name, "rb") as f:
+                            st.download_button(
+                                "⬇️ Descargar Archivo Excel",
+                                data=f,
+                                file_name=filename,
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            )
 
             except Exception as e:
-                st.error(f"❌ Error processing message: {e}")
-
-        if not result_data:
-            st.warning("⚠️ No data was extracted.")
-        else:
-            df = pd.DataFrame(result_data)
-
-            # Normalize expected columns
-            expected_columns = ["Objetivo", "Fecha", "DNI", "Nombre", "Entrada", "Salida"]
-            for col in expected_columns:
-                if col not in df.columns:
-                    df[col] = ""
-
-            df = df[expected_columns]
-
-            # Clean empty or hyphen-only rows
-            df = df[
-                ~df.apply(
-                    lambda row: all(re.fullmatch(r"[-–—\s]*", str(cell)) for cell in row),
-                    axis=1
-                )
-            ]
-
-            def format_time(value):
-                value = str(value).replace("hs", "").replace("HS", "").strip()
-
-                if re.match(r"^\d{1,2}$", value):
-                    return f"{int(value):02d}:00"
-
-                if "/" in value:
-                    value = value.replace("/", ":")
-
-                match = re.match(r"^(\d{1,2})([:hH]?)(\d{0,2})$", value)
-                if match:
-                    hour = int(match.group(1))
-                    minute = int(match.group(3)) if match.group(3) else 0
-                    return f"{hour:02d}:{minute:02d}"
-
-                return value
-
-            df["Entrada"] = df["Entrada"].apply(format_time)
-            df["Salida"] = df["Salida"].apply(format_time)
-
-            def format_date(value):
-                value = str(value).strip()
-
-                for fmt in ("%d/%m/%Y", "%d/%m/%y", "%d-%m-%Y", "%d-%m-%y"):
-                    try:
-                        date_obj = datetime.strptime(value, fmt)
-                        return date_obj.strftime("%d/%m/%Y")
-                    except:
-                        continue
-
-                return value
-
-            df["Fecha"] = df["Fecha"].apply(format_date)
-
-            # Save to Excel
-            filename = os.path.splitext(uploaded_file.name)[0] + ".xlsx"
-
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp_xlsx:
-                df.to_excel(tmp_xlsx.name, index=False)
-
-                st.success("✅ Archivo procesado con éxito!")
-                st.dataframe(df)
-
-                with open(tmp_xlsx.name, "rb") as f:
-                    st.download_button(
-                        "⬇️ Descargar Archivo Excel",
-                        data=f,
-                        file_name=filename,
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
+                st.error(f"❌ Error general al procesar el archivo: {e}")
