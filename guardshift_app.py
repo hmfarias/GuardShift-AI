@@ -3,7 +3,8 @@ import os
 import re
 import pandas as pd
 from docx import Document
-import google.generativeai as genai
+#import google.generativeai as genai
+from google import genai
 from datetime import datetime
 import tempfile
 
@@ -16,12 +17,24 @@ if not API_KEY:
     st.error("❌ Missing Google Gemini API key.")
     st.stop()
 
-genai.configure(api_key=API_KEY)
+#genai.configure(api_key=API_KEY)
+client = genai.Client(api_key=API_KEY)
+
+#def verify_gemini_api():
+#    try:
+#        test_model = genai.GenerativeModel("gemini-2.5-flash")
+#        response = test_model.generate_content("Say hello")
+#        return "hello" in response.text.lower()
+#   except Exception as e:
+#        st.error(f"❌ Gemini API Error: {e}")
+#        return False
 
 def verify_gemini_api():
     try:
-        test_model = genai.GenerativeModel("gemini-1.5-flash")
-        response = test_model.generate_content("Say hello")
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents="Say hello"
+        )
         return "hello" in response.text.lower()
     except Exception as e:
         st.error(f"❌ Gemini API Error: {e}")
